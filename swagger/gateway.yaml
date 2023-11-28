@@ -1,0 +1,164 @@
+basePath: /
+consumes:
+    - application/json
+definitions:
+    UserLoginCredentials:
+        description: UserLoginCredentials login credential
+        properties:
+            email:
+                type: string
+                x-go-name: Email
+            password:
+                type: string
+                x-go-name: Password
+        type: object
+        x-go-package: github.com/lebleuciel/maani/models
+    UserRegisterParameters:
+        description: UserRegisterParameters input parameters for creating users
+        properties:
+            email:
+                type: string
+                x-go-name: Email
+            firstName:
+                type: string
+                x-go-name: FirstName
+            lastName:
+                type: string
+                x-go-name: LastName
+            password:
+                type: string
+                x-go-name: Password
+        type: object
+        x-go-package: github.com/lebleuciel/maani/models
+    UserTokenResponse:
+        description: UserTokenResponse successful login response object for JWT token output
+        properties:
+            code:
+                format: int64
+                type: integer
+                x-go-name: Code
+            expire:
+                format: date-time
+                type: string
+                x-go-name: Expire
+            token:
+                type: string
+                x-go-name: Token
+        type: object
+        x-go-package: github.com/lebleuciel/maani/models
+host: localhost:8000
+info:
+    description: Gateway API Documentation
+    title: Maani.
+    version: 1.0.0
+paths:
+    /api/auth/login:
+        post:
+            operationId: login
+            parameters:
+                - in: body
+                  name: Body
+                  schema:
+                    $ref: '#/definitions/UserLoginCredentials'
+            responses:
+                "200":
+                    $ref: '#/responses/Token'
+            summary: Signs in admin user.
+            tags:
+                - Auth
+    /api/auth/logout:
+        post:
+            operationId: logout
+            responses:
+                "204":
+                    $ref: '#/responses/logout'
+            security:
+                - bearerAuth:
+                    - '[]'
+            summary: logs out the user.
+            tags:
+                - Auth
+    /api/auth/refresh:
+        post:
+            operationId: getRefreshToken
+            responses:
+                "200":
+                    $ref: '#/responses/refreshToken'
+            security:
+                - bearerAuth:
+                    - '[]'
+            summary: generate JWT RefreshToken for current user.
+            tags:
+                - Auth
+    /api/auth/register:
+        post:
+            operationId: register
+            parameters:
+                - in: body
+                  name: Body
+                  schema:
+                    $ref: '#/definitions/UserRegisterParameters'
+            responses:
+                "200":
+                    $ref: '#/responses/registerUser'
+            security:
+                - bearerAuth:
+                    - '[]'
+            summary: register new customer user.
+            tags:
+                - Auth
+produces:
+    - application/json
+responses:
+    Token:
+        description: ""
+        schema:
+            $ref: '#/definitions/UserTokenResponse'
+    logout:
+        description: ""
+        headers:
+            Code:
+                format: int64
+                type: integer
+    refreshToken:
+        description: ""
+        headers:
+            code:
+                format: int64
+                type: integer
+            expire:
+                format: date-time
+                type: string
+            token:
+                type: string
+    registerUser:
+        description: ""
+        headers:
+            LastLoginAt:
+                format: date-time
+                type: string
+            accessType:
+                type: string
+            createdAt:
+                format: date-time
+                type: string
+            email:
+                type: string
+            firstName:
+                type: string
+            id:
+                format: int64
+                type: integer
+            lastName:
+                type: string
+            updatedAt:
+                format: date-time
+                type: string
+schemes:
+    - http
+securityDefinitions:
+    bearerAuth:
+        in: header
+        name: Authorization
+        type: apiKey
+swagger: "2.0"

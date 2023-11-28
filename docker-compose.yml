@@ -1,0 +1,55 @@
+version: '3.5'
+
+services:
+  # Store Container
+  store:
+    container_name: store
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: maani:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    depends_on:
+      - db
+    restart: on-failure
+    volumes:
+      - ./settings.yml:/opt/maani/settings.yml  # Mount local settings.yml into the container
+    networks: 
+      - maani-network
+  # Retreival Container
+  retreival:
+    container_name: retreival
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: maani:latest
+    entrypoint: /opt/maani/retreival
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    restart: on-failure
+    volumes:
+      - ./settings.yml:/opt/maani/settings.yml  # Mount local settings.yml into the container
+    networks: 
+      - maani-network
+  # TimescaleDB Database
+  db:
+    container_name: maani-db
+    image: timescale/timescaledb:2.9.2-pg14
+    env_file:
+      - .env.compose
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "54320:5432"
+    restart: unless-stopped
+    networks: 
+      - maani-network
+volumes:
+  postgres:
+networks:
+  maani-network:
+    driver: bridge

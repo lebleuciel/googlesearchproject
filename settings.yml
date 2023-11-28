@@ -1,0 +1,34 @@
+global:
+  name: maani
+  readTimeout: 2m
+  readHeaderTimeout: 2m
+  writeTimeout: 2m
+  idleTimeout: 2m
+  maxHeaderBytes: 8196
+  backendPort: 9000
+  adminPort: 9001
+  gatewayPort: 8000
+  environment: release # supports: "debug" or "release" or "test"
+database:
+  # specifies which database should be used,
+  type: pgsql # supports: "none", "pgsql"
+  databaseName: postgres
+  user: postgres
+  password: postgres
+  port: 5432
+  sslMode: disable
+  host: maani-db
+  queryTimeout: 10s
+  syncInterval: 60s
+  maxOpenConnections: 50
+  maxIdleConnections: 20
+  connMaxLifetime: 60s
+retreival:
+  storeHost: http://store
+  tokenTimeout: 1h
+  refreshTokenTimeout: 3h
+  userIdHeaderKey: X-MAANI-USER
+store:
+  encryptKey: files-secret-key
+  filePath: /opt/files
+  maxFilesSizeByte: 100000000
