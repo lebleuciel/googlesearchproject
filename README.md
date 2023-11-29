@@ -36,7 +36,7 @@ The microservices communicate with each other using HTTP requests, and the proje
 To build images from the Docker files and start containers, use the following command:
 
 ```bash
-make up
+make run
 ```
 
 This command initializes three images:
@@ -94,13 +94,14 @@ Upon login, you will receive an authentication token. Use this token in the Bear
 For Postman users, a convenient script has been provided to automate token handling. You can download the Postman workspace from the following link and add it to your workspaces:
 
 Postman doc: https://documenter.getpostman.com/view/13169243/2s9YeG5rNc
+ 
 
 This workspace includes predefined settings for handling tokens, eliminating the need for manual entry during login.
 
 ### documentation
 If you prefer exploring the project through Go documentation, use the following command to serve Go documentation:
 ```bash
-make go-doc
+make godoc
 ```
 Feel free to choose the method that best suits your workflow, whether it's interacting with APIs through Swagger, utilizing Postman for streamlined testing, or exploring detailed Go documentation.
 
