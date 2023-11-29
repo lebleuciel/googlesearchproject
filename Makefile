@@ -177,6 +177,14 @@ generate-gateway-api: ## Generate Swagger Documentation from our models for Maan
 gateway-api:  ## Generates Swagger Documentation from our models for Maani Gateway-Side APIs
 	@swagger serve -F=swagger "./docs/swagger/gateway.yaml"
 
+
+##
+# go-build
+#
+go-build:
+	go build -o bin/store cmd/store/main.go
+	go build -o bin/retreival cmd/retreival/main.go
+
 ##
 # godoc
 #
