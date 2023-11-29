@@ -30,7 +30,7 @@ func (File) Fields() []ent.Field {
 		field.String("type").
 			NotEmpty().
 			MinLen(1).
-			MaxLen(64),
+			MaxLen(256),
 		field.Time("created_at").
 			Default(time.Now).
 			Optional().

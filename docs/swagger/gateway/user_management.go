@@ -20,7 +20,7 @@ type SignInUserRequest struct {
 }
 
 // swagger:route POST /api/auth/logout Auth logout
-// logs out the user.
+// Logs out the user.
 // Security:
 //    bearerAuth: []
 // responses:
@@ -32,7 +32,7 @@ type LogOutUserResponse struct {
 }
 
 // swagger:route POST /api/auth/refresh Auth getRefreshToken
-// generate JWT RefreshToken for current user.
+// Generate JWT RefreshToken for current user.
 // Security:
 //    bearerAuth: []
 // responses:
@@ -44,7 +44,7 @@ type RefreshTokenResponse struct {
 }
 
 // swagger:route POST /api/auth/register Auth register
-// register new customer user.
+// Register new customer user.
 // Security:
 //    bearerAuth: []
 // responses:
@@ -60,3 +60,11 @@ type RegisterUserRequest struct {
 	// in:body
 	Body models.UserRegisterParameters
 }
+
+// swagger:route GET /api/user/list File list
+// Its only for admin user.
+// Its only for admin user
+// Security:
+//    bearerAuth: []
+// responses:
+//   200:

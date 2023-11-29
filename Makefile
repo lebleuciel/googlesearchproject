@@ -166,45 +166,16 @@ generate-schema:
 	go run -mod=mod entgo.io/ent/cmd/ent generate "./pkg/database/ent/schema" --feature sql/upsert --feature sql/lock
 
 ##
-# generate-backend-api
-#
-generate-client-api: ## Generate Swagger Documentation from our models for Maani Backend-Side APIs
-	@swagger generate spec -w "./swagger/backend/" -o "./swagger/backend.yaml" --scan-models
-
-##
-# generate-admin-api
-#
-generate-admin-api: ## Generate Swagger Documentation from our models for Maani Admin-Side APIs
-	@swagger generate spec -w "./swagger/admin/" -o "./swagger/admin.yaml" --scan-models
-
-
-##
 # generate-gateway-api
 #
 generate-gateway-api: ## Generate Swagger Documentation from our models for Maani Gateway-Side APIs
-	@swagger generate spec -w "./swagger/gateway/" -o "./swagger/gateway.yaml" --scan-models
-
-
-##
-# backend-api
-#
-client-api: ## Serve Swagger Documentation from our models for Maani Backend-Side APIs
-	@swagger serve -F=swagger "swagger/backend.yaml"
-
-
-##
-# admin-api
-#
-admin-api:  ## Generates Swagger Documentation from our models for Maani Admin-Side APIs
-	@swagger serve -F=swagger "./swagger/admin.yaml"
-
+	@swagger generate spec -w "./docs/swagger/gateway/" -o "./docs/swagger/gateway.yaml" --scan-models
 
 ##
 # gateway-api
 #
 gateway-api:  ## Generates Swagger Documentation from our models for Maani Gateway-Side APIs
-	@swagger serve -F=swagger "./swagger/gateway.yaml"
-
+	@swagger serve -F=swagger "./docs/swagger/gateway.yaml"
 
 ##
 # godoc

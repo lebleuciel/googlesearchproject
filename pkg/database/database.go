@@ -30,6 +30,7 @@ type (
 		GetUserByEmail(email string) (*models.UserWithPassword, error)
 		CreateUser(spec models.UserCreationParameters) (models.User, error)
 		UpdateUserLastLogin(userId int) error
+		GetUserList() ([]models.User, error)
 	}
 
 	// FilesDatabaseMethods to manage Files Repository Methods
@@ -39,6 +40,7 @@ type (
 		GetFilesSize() (int, error)
 		SaveFile(models.File) error
 		GetFile([]string, []string) (models.File, error)
+		GetFileList() ([]models.File, error)
 	}
 )
 

@@ -18,6 +18,7 @@ type Files struct {
 func (u *Files) RegisterRoutes(v1 *gin.RouterGroup) {
 	fmt.Println("registering file related endpoints to backend server")
 	files := v1.Group("/file")
+
 	files.GET("", u.getFile())
 	files.POST("", u.saveFiles())
 }

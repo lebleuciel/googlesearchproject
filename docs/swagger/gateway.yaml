@@ -63,7 +63,7 @@ paths:
             responses:
                 "200":
                     $ref: '#/responses/Token'
-            summary: Signs in admin user.
+            summary: Signs in user.
             tags:
                 - Auth
     /api/auth/logout:
@@ -75,7 +75,7 @@ paths:
             security:
                 - bearerAuth:
                     - '[]'
-            summary: logs out the user.
+            summary: Logs out the user.
             tags:
                 - Auth
     /api/auth/refresh:
@@ -87,7 +87,7 @@ paths:
             security:
                 - bearerAuth:
                     - '[]'
-            summary: generate JWT RefreshToken for current user.
+            summary: Generate JWT RefreshToken for current user.
             tags:
                 - Auth
     /api/auth/register:
@@ -104,9 +104,80 @@ paths:
             security:
                 - bearerAuth:
                     - '[]'
-            summary: register new customer user.
+            summary: Register new customer user.
             tags:
                 - Auth
+    /api/file:
+        get:
+            operationId: download
+            parameters:
+                - in: formData
+                  name: name
+                  type: string
+                  x-go-name: Name
+                - in: query
+                  items:
+                    type: string
+                  name: tags
+                  type: array
+                  x-go-name: Tags
+            responses:
+                "200":
+                    description: ""
+            security:
+                - bearerAuth:
+                    - '[]'
+            summary: Download file.
+            tags:
+                - File
+        post:
+            operationId: upload
+            parameters:
+                - in: formData
+                  name: files
+                  type: file
+                  x-go-name: File
+                - in: query
+                  items:
+                    type: string
+                  name: tags
+                  type: array
+                  x-go-name: Tags
+            responses:
+                "200":
+                    description: ""
+            security:
+                - bearerAuth:
+                    - '[]'
+            summary: Upload file.
+            tags:
+                - File
+    /api/file/list:
+        get:
+            description: Its only for admin user
+            operationId: list
+            responses:
+                "200":
+                    description: ""
+            security:
+                - bearerAuth:
+                    - '[]'
+            summary: Its only for admin user.
+            tags:
+                - File
+    /api/user/list:
+        get:
+            description: Its only for admin user
+            operationId: list
+            responses:
+                "200":
+                    description: ""
+            security:
+                - bearerAuth:
+                    - '[]'
+            summary: Its only for admin user.
+            tags:
+                - File
 produces:
     - application/json
 responses:

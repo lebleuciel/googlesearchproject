@@ -187,6 +187,28 @@ func (p *PostgresDatabase) UpdateUserLastLogin(userId int) error {
 	return err
 }
 
+func (p *PostgresDatabase) GetUserList() ([]models.User, error) {
+	users, err := p.client.User.Query().All(p.getCtx())
+	if err != nil {
+		return nil, err
+	}
+
+	var result []models.User
+	for _, user := range users {
+		result = append(result, models.User{
+			Id:          user.ID,
+			FirstName:   user.FirstName,
+			LastName:    user.LastName,
+			Email:       *user.Email,
+			AccessType:  string(user.AccessType),
+			CreatedAt:   *user.CreatedAt,
+			UpdatedAt:   user.UpdatedAt,
+			LastLoginAt: user.LastLoginAt,
+		})
+	}
+	return result, nil
+}
+
 func (p *PostgresDatabase) AddFileTypeIfNotExist(id string) error {
 	filetype := p.client.Filetype.Query().Where(filetype.IDEQ(id)).FirstX(p.getCtx())
 	if filetype == nil {
@@ -293,4 +315,23 @@ func (p *PostgresDatabase) GetFile(name []string, tags []string) (models.File, e
 		TypeId: f.Type,
 		UserId: f.UserID,
 	}, nil
+}
+
+func (p *PostgresDatabase) GetFileList() ([]models.File, error) {
+	files, err := p.client.File.Query().All(p.getCtx())
+	if err != nil {
+		return nil, err
+	}
+
+	var result []models.File
+	for _, file := range files {
+		result = append(result, models.File{
+			Name:   file.Name,
+			UUID:   file.UUID,
+			Size:   file.Size,
+			TypeId: file.Type,
+			UserId: file.UserID,
+		})
+	}
+	return result, nil
 }

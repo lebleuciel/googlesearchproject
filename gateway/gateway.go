@@ -27,7 +27,7 @@ func NewGatewayServer(settings settings.Settings, database database.Database, re
 		return nil, errors.Wrap(err, "could not initialize auth module")
 	}
 
-	fileModule, err := forwarder.NewFileModule(
+	fileModule, err := forwarder.NewForwarderModule(
 		authModule,
 		settings.GatewayServer.StoreHost,
 		settings.Global.AdminPort,

@@ -108,9 +108,14 @@ func (f *FileRepository) GetEncryptedFile(name []string, tags []string) (databas
 
 	file, err := tx.GetFile(name, tags)
 	if err != nil {
-		return nil, models.File{}, nil
+		return nil, models.File{}, err
 	}
 	return tx, file, nil
+}
+
+func (f *FileRepository) GetFileList() ([]models.File, error) {
+	files, err := f.db.GetFileList()
+	return files, err
 }
 
 func NewFileRepository(st settings.Settings, db database.Database) (*FileRepository, error) {

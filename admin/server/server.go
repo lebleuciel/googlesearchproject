@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/lebleuciel/maani/admin/files"
+	"github.com/lebleuciel/maani/admin/users"
 )
 
 type Server struct {
@@ -17,9 +18,12 @@ type Server struct {
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.engine.ServeHTTP(w, r)
 }
-func NewServer(files *files.Files) (*Server, error) {
+func NewServer(files *files.Files, users *users.Users) (*Server, error) {
 	if files == nil {
 		return nil, ErrNilFileModule
+	}
+	if users == nil {
+		return nil, ErrNilUserModule
 	}
 
 	gin.SetMode("release")
@@ -35,6 +39,7 @@ func NewServer(files *files.Files) (*Server, error) {
 
 	v1 := engine.Group("/api")
 	files.RegisterRoutes(v1)
+	users.RegisterRoutes(v1)
 
 	return &Server{
 		enviroment: "release",

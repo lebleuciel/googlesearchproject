@@ -25,7 +25,7 @@ func NewBackendServer(setting settings.Settings, database database.Database) (*s
 	}
 
 	// Initialize API Modules
-	fileModule, err := files.NewFileModule(fileService, fileRepo, true)
+	fileModule, err := files.NewFileModule(fileService, fileRepo, false)
 	if err != nil {
 		return nil, errors.Wrap(err, "Could not initialize new file module")
 	}

@@ -1,0 +1,839 @@
+{
+	"info": {
+		"_postman_id": "40b9cd38-e922-4a72-8c2d-2be09f4af319",
+		"name": "Maani",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13169243"
+	},
+	"item": [
+		{
+			"name": "Backend",
+			"item": [
+				{
+					"name": "Upload Files",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": "/Users/pedramsadeghian/Downloads/IMG_0507.jpg"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": "/Users/pedramsadeghian/Downloads/ssh-login.uu"
+								},
+								{
+									"key": "tags",
+									"value": "login img desktop",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/file",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"file"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Upload Files",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": "/Users/pedramsadeghian/Downloads/IMG_0507.jpg"
+										},
+										{
+											"key": "files",
+											"type": "file",
+											"src": "/Users/pedramsadeghian/Downloads/ssh-login.uu"
+										},
+										{
+											"key": "tags",
+											"value": "login img desktop",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/file",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"file"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "91"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Nov 2023 01:09:44 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": [\n        \"File IMG_0507.jpg saved successfully\",\n        \"File ssh-login.uu saved successfully\"\n    ]\n}"
+						},
+						{
+							"name": "No Space Left",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": "/Users/pedramsadeghian/Downloads/IMG_0507.jpg"
+										},
+										{
+											"key": "files",
+											"type": "file",
+											"src": "/Users/pedramsadeghian/Downloads/Moslem Fatahi - Naro Maryam (320).mp3"
+										},
+										{
+											"key": "tags",
+											"value": "login img desktop",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/file",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"file"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "137"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Nov 2023 01:14:29 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": [\n        \"Can not save file, error: reach maximum amount of disk usage\",\n        \"Can not save file, error: reach maximum amount of disk usage\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Download File",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "a",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/file",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"file"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "No Files Left",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "a",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/file",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"file"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "26"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Nov 2023 01:10:59 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"File not found\"\n}"
+						},
+						{
+							"name": "Download Bash File",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "google-logo-transparent",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/file",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"file"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "raw",
+							"header": [
+								{
+									"key": "Accept-Ranges",
+									"value": "bytes"
+								},
+								{
+									"key": "Content-Description",
+									"value": "File Transfer"
+								},
+								{
+									"key": "Content-Disposition",
+									"value": "attachment; filename=\"generator.sh\""
+								},
+								{
+									"key": "Content-Length",
+									"value": "109"
+								},
+								{
+									"key": "Content-Transfer-Encoding",
+									"value": "binary"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/x-sh"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Nov 2023 01:13:15 GMT"
+								},
+								{
+									"key": "Last-Modified",
+									"value": "Wed, 29 Nov 2023 01:13:15 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "#!bin/bash\nmkdir ./out\nfor i in $(seq 1 $1);\ndo\n\tpython3 main.py < ./in/input$i.txt > ./out/output$i.txt\ndone"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Get Users List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/user/list",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"list"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Uesrs List",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/user/list",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "934"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Nov 2023 01:04:49 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 12884901889,\n        \"firstName\": \"Customer\",\n        \"lastName\": \"User\",\n        \"email\": \"customer@example.com\",\n        \"accessType\": \"Customer\",\n        \"createdAt\": \"2023-11-28T01:20:26.789621Z\",\n        \"updatedAt\": \"2023-11-28T23:27:38.138229Z\",\n        \"LastLoginAt\": \"2023-11-28T23:27:38.138218Z\"\n    },\n    {\n        \"id\": 12884901892,\n        \"firstName\": \"hi\",\n        \"lastName\": \"hi\",\n        \"email\": \"hi@hi.com\",\n        \"accessType\": \"Customer\",\n        \"createdAt\": \"2023-11-29T00:07:12.447752Z\",\n        \"updatedAt\": \"2023-11-29T00:07:28.905792Z\",\n        \"LastLoginAt\": \"2023-11-29T00:07:28.905784Z\"\n    },\n    {\n        \"id\": 12884901893,\n        \"firstName\": \"name\",\n        \"lastName\": \"last\",\n        \"email\": \"mail@mail.com\",\n        \"accessType\": \"Customer\",\n        \"createdAt\": \"2023-11-29T00:53:57.377527Z\",\n        \"updatedAt\": \"2023-11-29T01:03:32.805937Z\",\n        \"LastLoginAt\": \"2023-11-29T01:03:32.805929Z\"\n    },\n    {\n        \"id\": 12884901888,\n        \"firstName\": \"Admin\",\n        \"lastName\": \"User\",\n        \"email\": \"admin@example.com\",\n        \"accessType\": \"Admin\",\n        \"createdAt\": \"2023-11-28T01:20:26.778287Z\",\n        \"updatedAt\": \"2023-11-29T01:04:44.788578Z\",\n        \"LastLoginAt\": \"2023-11-29T01:04:44.788575Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Files List",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": [
+						{
+							"name": "Get Files List",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/file/list",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"file",
+										"list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "303"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Nov 2023 01:09:57 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"Name\": \"IMG_0507.jpg\",\n        \"UUID\": \"9e6e61bcd24d389169a41e4a07345d99\",\n        \"Size\": 1677113,\n        \"TypeId\": \"image/jpeg\",\n        \"UserId\": 12884901888,\n        \"Content\": null,\n        \"Tags\": null\n    },\n    {\n        \"Name\": \"ssh-login.uu\",\n        \"UUID\": \"f70555ec823f571ff5a99000851b1427\",\n        \"Size\": 67,\n        \"TypeId\": \"text/x-uuencode\",\n        \"UserId\": 12884901888,\n        \"Content\": null,\n        \"Tags\": null\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"mail@mail.com\",\n  \"firstName\": \"name\",\n  \"lastName\": \"last\",\n  \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Register",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"mail@mail.com\",\n  \"firstName\": \"name\",\n  \"lastName\": \"last\",\n  \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Nov 2023 00:53:57 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "212"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 12884901893,\n    \"firstName\": \"name\",\n    \"lastName\": \"last\",\n    \"email\": \"mail@mail.com\",\n    \"accessType\": \"Customer\",\n    \"createdAt\": \"2023-11-29T00:53:57.377527255Z\",\n    \"updatedAt\": \"2023-11-29T00:53:57.377527713Z\",\n    \"LastLoginAt\": null\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"pm.collectionVariables.set(\"token\", responseJson.token);",
+									"console.log('Done')"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"mail@mail.com\",\n  \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Customer Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"mail@mail.com\",\n  \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Nov 2023 01:02:34 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "265"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"expire\": \"2023-11-29T02:02:34Z\",\n    \"token\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haWxAbWFpbC5jb20iLCJleHAiOjE3MDEyMjMzNTQsIm9yaWdfaWF0IjoxNzAxMjE5NzU0fQ.EuPAHbamEwLUDfaYfEw8TkyORj2fpv09__Vl5FW581RyE_JU4fYe20VuM99tSyN9DSUGh2GVv57DY_Q3GI27lQ\"\n}"
+						},
+						{
+							"name": "Admin Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Nov 2023 01:04:44 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "270"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"expire\": \"2023-11-29T02:04:44Z\",\n    \"token\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzAxMjIzNDg0LCJvcmlnX2lhdCI6MTcwMTIxOTg4NH0.QCpHrpRsJPe8E0DrCxUlS00xlL51M3kqJY50BAKXvh5FRYtAgNs49nFhvz6OENfwFFuYmw6_DcrukWFb26K-ZQ\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"pm.collectionVariables.unset(\"token\")",
+									"console.log('Done')"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Logout",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/logout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Nov 2023 01:02:56 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Refresh",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/refresh",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Refresh",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/refresh",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Nov 2023 01:02:50 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "265"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"expire\": \"2023-11-29T02:02:50Z\",\n    \"token\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haWxAbWFpbC5jb20iLCJleHAiOjE3MDEyMjMzNzAsIm9yaWdfaWF0IjoxNzAxMjE5NzcwfQ.ODJlMYmG83v4g8ro6EjneW_xxP48_v6FtNJxjmF_HQUCI080_K7axfBoOHVq-6RL-RQ6Q8cB7TSf0lafPpxS_w\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}

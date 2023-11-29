@@ -20,7 +20,7 @@ func (Filetype) Fields() []ent.Field {
 			StorageKey("type").
 			NotEmpty().
 			MinLen(1).
-			MaxLen(64),
+			MaxLen(256),
 		field.Int("allowed_size").
 			Default(10000000),
 		field.Bool("is_banned").

@@ -51,7 +51,7 @@ func (f *FileService) GetFile(c *gin.Context, isAdmin bool) {
 
 	tx, file, err := f.repository.GetEncryptedFile(name, tags)
 	defer func() {
-		if err != nil {
+		if err != nil && tx != nil {
 			if e, ok := err.(*pq.Error); !ok || e.Code != database.ErrSerializationFailure {
 				rollbackErr := tx.Rollback()
 				if rollbackErr != nil {
@@ -60,10 +60,13 @@ func (f *FileService) GetFile(c *gin.Context, isAdmin bool) {
 			}
 		}
 	}()
-
 	if err != nil {
-		logger.Errorw("failed to get encrypted file", "error", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get encrypted file"})
+		if err.Error() == "file not found" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "File not found"})
+		} else {
+			logger.Errorw("failed to get encrypted file", "error", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get encrypted file"})
+		}
 		return
 	}
 
@@ -74,6 +77,11 @@ func (f *FileService) GetFile(c *gin.Context, isAdmin bool) {
 	if err != nil {
 		logger.Errorw("failed to decryptFile file", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decryptFile file"})
+
+		if os.IsNotExist(err) {
+			err = nil
+			tx.Commit()
+		}
 		return
 	}
 
@@ -150,4 +158,14 @@ func (f *FileService) SaveFiles(c *gin.Context, isAdmin bool) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": message,
 	})
+}
+
+func (f *FileService) GetFileList(c *gin.Context, isAdmin bool) {
+	files, err := f.repository.GetFileList()
+	if err != nil {
+		logger.Errorw("failed to get file list", "error", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "can not get files list"})
+		return
+	}
+	c.JSON(http.StatusOK, files)
 }

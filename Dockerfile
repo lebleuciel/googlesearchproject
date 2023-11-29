@@ -7,8 +7,8 @@ ENV GO111MODULE=on
 ENV GGOOS=linux
 
 COPY ../.. .
-RUN go build -tags=nomsgpack -a -installsuffix nocgo -o /store cmd/store/main.go
-RUN go build -tags=nomsgpack -a -installsuffix nocgo -o /retreival cmd/retreival/main.go
+RUN go build -installsuffix nocgo -o /store cmd/store/main.go
+RUN go build -installsuffix nocgo -o /retreival cmd/retreival/main.go
 
 FROM debian:buster-slim
 

@@ -18,13 +18,11 @@ type Files struct {
 func (u *Files) RegisterRoutes(v1 *gin.RouterGroup) {
 	fmt.Println("registering file related endpoints to admin server")
 	files := v1.Group("/file")
-	files.GET("/", u.getCurrentFile())
+	files.GET("/list", u.getFileList())
 }
-func (u *Files) getCurrentFile() gin.HandlerFunc {
+func (u *Files) getFileList() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		u.service.GetFile(ctx, false)
-		return
-		// ctx.JSON(200, "file data returned")
+		u.service.GetFileList(ctx, true)
 	}
 }
 func NewFileModule(fileService *fileService.FileService, fileRepo *fileRepository.FileRepository, authEnabled bool) (*Files, error) {

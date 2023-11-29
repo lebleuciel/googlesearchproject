@@ -36,18 +36,26 @@ func (u *Forwarder) RegisterRoutes(v1 *gin.RouterGroup) {
 	fmt.Println("Registering related endpoints to gateway server")
 
 	file := v1.Group("/file")
+	user := v1.Group("/user")
 	if u.authEnabled {
 		file.Use(u.authMiddleware.Middleware())
+		user.Use(u.authMiddleware.Middleware())
 	}
-	file.Any("", u.forwardBackend())
+	file.Any("", u.forward(u.backendUrl, false))
+	file.Any("/list", u.forward(u.adminUrl, true))
+	user.Any("/list", u.forward(u.adminUrl, true))
 }
 
-func (u *Forwarder) forwardBackend() gin.HandlerFunc {
+func (u *Forwarder) forward(url string, shouldBeAdmin bool) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if u.authEnabled {
-			userData, _ := u.checkAuthorizedRequest(ctx, false)
+			userData, err := u.checkAuthorizedRequest(ctx, shouldBeAdmin)
+			if err != nil {
+				return
+			}
+
 			// Create a new GET request to the other code
-			req, err := http.NewRequest(ctx.Request.Method, u.backendUrl+ctx.FullPath(), ctx.Request.Body)
+			req, err := http.NewRequest(ctx.Request.Method, url+ctx.FullPath(), ctx.Request.Body)
 			if err != nil {
 				logger.Errorw("can not create new request in gatewey", "error", err)
 				ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Internal Server Error"})
@@ -104,7 +112,7 @@ func (u *Forwarder) checkAuthorizedRequest(c *gin.Context, shouldBeAdmin bool) (
 	return userData, nil
 }
 
-func NewFileModule(auth *auth.Auth, storeHost string, adminPort int, backendPort int, userHeaderKey string, authEnabled bool) (*Forwarder, error) {
+func NewForwarderModule(auth *auth.Auth, storeHost string, adminPort int, backendPort int, userHeaderKey string, authEnabled bool) (*Forwarder, error) {
 	if storeHost == "" {
 		return nil, ErrEmptyStoreHost
 	}
@@ -113,6 +121,9 @@ func NewFileModule(auth *auth.Auth, storeHost string, adminPort int, backendPort
 	}
 	if backendPort == 0 {
 		return nil, ErrEmptyBackendPort
+	}
+	if userHeaderKey == "" {
+		return nil, ErrEmptyUserHeaderKey
 	}
 	return &Forwarder{
 		adminUrl:       fmt.Sprintf("%s:%d", storeHost, adminPort),

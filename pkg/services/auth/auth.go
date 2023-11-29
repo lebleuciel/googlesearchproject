@@ -16,7 +16,7 @@ import (
 )
 
 type Auth struct {
-	userRepository *user.Repository
+	userRepository *user.UserRepository
 	middleware     *jwt.GinJWTMiddleware
 }
 
@@ -64,7 +64,7 @@ func (a *Auth) RegisterUserHandler() gin.HandlerFunc {
 	}
 }
 
-func getAuthenticator(userRepository *user.Repository) func(*gin.Context) (interface{}, error) {
+func getAuthenticator(userRepository *user.UserRepository) func(*gin.Context) (interface{}, error) {
 	return func(c *gin.Context) (interface{}, error) {
 		var creds models.UserLoginCredentials
 		err := c.ShouldBindJSON(&creds)
@@ -102,7 +102,7 @@ func getAuthenticator(userRepository *user.Repository) func(*gin.Context) (inter
 	}
 }
 
-func getAuthorizer(userRepository *user.Repository) func(interface{}, *gin.Context) bool {
+func getAuthorizer(userRepository *user.UserRepository) func(interface{}, *gin.Context) bool {
 	return func(data interface{}, c *gin.Context) bool {
 		if _, ok := data.(*models.UserWithPassword); ok {
 			return true
@@ -112,7 +112,7 @@ func getAuthorizer(userRepository *user.Repository) func(interface{}, *gin.Conte
 	}
 }
 
-func getPayloadFunc(userRepository *user.Repository) func(interface{}) jwt.MapClaims {
+func getPayloadFunc(userRepository *user.UserRepository) func(interface{}) jwt.MapClaims {
 	return func(data interface{}) jwt.MapClaims {
 		if v, ok := data.(*models.UserWithPassword); ok {
 			return jwt.MapClaims{
@@ -123,7 +123,7 @@ func getPayloadFunc(userRepository *user.Repository) func(interface{}) jwt.MapCl
 	}
 }
 
-func getUnauthorizedFunc(userRepository *user.Repository) func(*gin.Context, int, string) {
+func getUnauthorizedFunc(userRepository *user.UserRepository) func(*gin.Context, int, string) {
 	return func(c *gin.Context, code int, message string) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Unauthorized: " + message,
@@ -131,7 +131,7 @@ func getUnauthorizedFunc(userRepository *user.Repository) func(*gin.Context, int
 	}
 }
 
-func getIdentityHandlerFunc(userRepository *user.Repository) func(*gin.Context) interface{} {
+func getIdentityHandlerFunc(userRepository *user.UserRepository) func(*gin.Context) interface{} {
 	return func(c *gin.Context) interface{} {
 		claims := jwt.ExtractClaims(c)
 		username := claims["email"].(string)
@@ -167,7 +167,7 @@ func GetUserFromContext(c *gin.Context) (models.UserWithPassword, error) {
 	return *userData, nil
 }
 
-func NewAuth(userRepository *user.Repository, secretKey, identityKey, realm string, timeout, maxRefresh time.Duration) (*Auth, error) {
+func NewAuth(userRepository *user.UserRepository, secretKey, identityKey, realm string, timeout, maxRefresh time.Duration) (*Auth, error) {
 	if userRepository == nil {
 		return nil, ErrNilUserRepo
 	}
