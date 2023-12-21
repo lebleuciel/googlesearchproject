@@ -2,11 +2,13 @@ package file
 
 import (
 	"fmt"
+	"image"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 
+	"github.com/antchfx/htmlquery"
 	"github.com/gin-gonic/gin"
 	"github.com/lebleuciel/maani/models"
 	"github.com/lebleuciel/maani/pkg/database"
@@ -43,6 +45,63 @@ func NewFileService(repo *repository.FileRepository, st settings.Settings) (*Fil
 		st:         st,
 		repository: repo,
 	}, nil
+}
+
+func (f *FileService) SearchGoogle(c *gin.Context, isAdmin bool) ([]image.Image, error) {
+	searchQuery := c.Query("q")
+	maxImagesStr := c.Query("maxnum")
+	maxImages, err := strconv.Atoi(maxImagesStr)
+	if err != nil {
+		log.Println("Error converting maxImages to int:", err)
+	}
+	url := fmt.Sprintf("https://www.google.com/search?q=%s&tbm=isch", searchQuery)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	doc, err := htmlquery.Parse(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var images []image.Image
+	count := 0
+
+	for _, imgNode := range htmlquery.Find(doc, "//img") {
+		if count >= maxImages {
+			break
+		}
+
+		imgURL := htmlquery.SelectAttr(imgNode, "src")
+		img, err := downloadImage(imgURL)
+		if err != nil {
+			log.Println("Error downloading image:", err)
+			continue
+		}
+
+		images = append(images, img)
+		count++
+	}
+
+	return images, nil
+}
+
+func downloadImage(url string) (image.Image, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	img, _, err := image.Decode(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return img, nil
 }
 
 func (f *FileService) GetFile(c *gin.Context, isAdmin bool) {
