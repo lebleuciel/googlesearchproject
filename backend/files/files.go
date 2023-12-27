@@ -21,7 +21,7 @@ func (u *Files) RegisterRoutes(v1 *gin.RouterGroup) {
 
 	files.GET("", u.getFile())
 	files.POST("", u.saveFiles())
-	files.POST("search", u.searchGoogle())
+	files.POST("/search", u.searchGoogle())
 }
 
 func (u *Files) searchGoogle() gin.HandlerFunc {

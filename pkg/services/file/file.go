@@ -2,7 +2,6 @@ package file
 
 import (
 	"fmt"
-	"image"
 	"log"
 	"net/http"
 	"os"
@@ -34,74 +33,88 @@ func init() {
 
 type FileService struct {
 	st         settings.Settings
+	db         database.Database
 	repository *repository.FileRepository
 }
 
-func NewFileService(repo *repository.FileRepository, st settings.Settings) (*FileService, error) {
+func NewFileService(repo *repository.FileRepository, st settings.Settings, db database.Database) (*FileService, error) {
 	if repo == nil {
 		return nil, ErrNilFileRepo
 	}
 	return &FileService{
 		st:         st,
+		db:         db,
 		repository: repo,
 	}, nil
 }
 
-func (f *FileService) SearchGoogle(c *gin.Context, isAdmin bool) ([]image.Image, error) {
+func (f *FileService) SearchGoogle(c *gin.Context, isAdmin bool) {
 	searchQuery := c.Query("q")
 	maxImagesStr := c.Query("maxnum")
 	maxImages, err := strconv.Atoi(maxImagesStr)
 	if err != nil {
 		log.Println("Error converting maxImages to int:", err)
 	}
-	url := fmt.Sprintf("https://www.google.com/search?q=%s&tbm=isch", searchQuery)
+	url := fmt.Sprintf("http://www.google.com/search?q=%s&tbm=isch", searchQuery)
 
 	resp, err := http.Get(url)
 	if err != nil {
-		return nil, err
+		fmt.Println("Could not request to google: ", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not request to google"})
+		return
 	}
 	defer resp.Body.Close()
 
 	doc, err := htmlquery.Parse(resp.Body)
 	if err != nil {
-		return nil, err
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not parsed google request"})
+		return
 	}
 
-	var images []image.Image
 	count := 0
+	var files_name string
+
+	userId, err := strconv.Atoi(c.GetHeader(f.st.GatewayServer.UserIdHeaderKey))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "can not parse user id from header"})
+		return
+	}
 
 	for _, imgNode := range htmlquery.Find(doc, "//img") {
+		fmt.Println("FILLDD")
 		if count >= maxImages {
 			break
 		}
 
 		imgURL := htmlquery.SelectAttr(imgNode, "src")
-		img, err := downloadImage(imgURL)
+		// content, name, size, type, err := helpers.DownloadImage()
+		content, name, size, filetype, err := helpers.DownloadImage(imgURL)
 		if err != nil {
 			log.Println("Error downloading image:", err)
 			continue
 		}
+		tags := make([]string, 0)
+		err = f.db.AddFileTypeIfNotExist(filetype)
+		if err != nil {
+			fmt.Println("can't add file types into database", "error", err)
+			continue
+		}
 
-		images = append(images, img)
+		f.repository.SaveEncryptedFile(models.File{
+			Name:    name,
+			Size:    int(size),
+			TypeId:  filetype,
+			UserId:  userId,
+			Content: content,
+			Tags:    tags,
+		})
+		files_name += name + ","
+
 		count++
 	}
 
-	return images, nil
-}
-
-func downloadImage(url string) (image.Image, error) {
-	resp, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	img, _, err := image.Decode(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	return img, nil
+	c.JSON(http.StatusOK, gin.H{"files name": files_name})
+	return
 }
 
 func (f *FileService) GetFile(c *gin.Context, isAdmin bool) {
@@ -195,12 +208,14 @@ func (f *FileService) SaveFiles(c *gin.Context, isAdmin bool) {
 	var message []string
 	var error_message []string
 	for _, file := range form.File["files"] {
+		content, _ := helpers.ReadFileContent(file)
+
 		err := f.repository.SaveEncryptedFile(models.File{
 			Name:    file.Filename,
 			Size:    int(file.Size),
 			TypeId:  file.Header.Get("Content-Type"),
 			UserId:  userId,
-			Content: file,
+			Content: content,
 			Tags:    tags,
 		})
 		if err != nil {

@@ -19,7 +19,7 @@ func (File) Fields() []ent.Field {
 		field.String("name").
 			NotEmpty().
 			MinLen(1).
-			MaxLen(64),
+			MaxLen(512),
 		field.Int("user_id"),
 		field.String("uuid").
 			NotEmpty().
@@ -30,7 +30,7 @@ func (File) Fields() []ent.Field {
 		field.String("type").
 			NotEmpty().
 			MinLen(1).
-			MaxLen(256),
+			MaxLen(512),
 		field.Time("created_at").
 			Default(time.Now).
 			Optional().

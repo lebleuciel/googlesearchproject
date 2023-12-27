@@ -44,6 +44,7 @@ func (u *Forwarder) RegisterRoutes(v1 *gin.RouterGroup) {
 	file.Any("", u.forward(u.backendUrl, false))
 	file.Any("/list", u.forward(u.adminUrl, true))
 	user.Any("/list", u.forward(u.adminUrl, true))
+	file.Any("/search", u.forward(u.backendUrl, false))
 }
 
 func (u *Forwarder) forward(url string, shouldBeAdmin bool) gin.HandlerFunc {
@@ -55,7 +56,7 @@ func (u *Forwarder) forward(url string, shouldBeAdmin bool) gin.HandlerFunc {
 			}
 
 			// Create a new GET request to the other code
-			req, err := http.NewRequest(ctx.Request.Method, url+ctx.FullPath(), ctx.Request.Body)
+			req, err := http.NewRequest(ctx.Request.Method, url+ctx.FullPath()+"?"+ctx.Request.URL.RawQuery, ctx.Request.Body)
 			if err != nil {
 				logger.Errorw("can not create new request in gatewey", "error", err)
 				ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Internal Server Error"})

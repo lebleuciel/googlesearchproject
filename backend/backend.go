@@ -19,7 +19,7 @@ func NewBackendServer(setting settings.Settings, database database.Database) (*s
 	}
 
 	// Initialize Services
-	fileService, err := FileService.NewFileService(fileRepo, setting)
+	fileService, err := FileService.NewFileService(fileRepo, setting, database)
 	if err != nil {
 		return nil, errors.Wrap(err, "Could not initialize new file service")
 	}

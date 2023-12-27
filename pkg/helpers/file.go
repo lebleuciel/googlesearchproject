@@ -10,15 +10,9 @@ import (
 	"path/filepath"
 )
 
-func SaveEncryptedFile(file *multipart.FileHeader, destDir string, key []byte) (string, error) {
+func SaveEncryptedFile(fileContent []byte, destDir string, key []byte) (string, error) {
 	// Generate UUID for file name
 	newFileName, err := GenerateUUID()
-	if err != nil {
-		return "", err
-	}
-
-	// Read file content into []byte
-	fileContent, err := ReadFileContent(file)
 	if err != nil {
 		return "", err
 	}

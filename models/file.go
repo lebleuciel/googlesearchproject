@@ -1,7 +1,5 @@
 package models
 
-import "mime/multipart"
-
 // File general object contains file details
 type File struct {
 	Name    string
@@ -9,6 +7,6 @@ type File struct {
 	Size    int
 	TypeId  string
 	UserId  int
-	Content *multipart.FileHeader
+	Content []byte
 	Tags    []string
 }

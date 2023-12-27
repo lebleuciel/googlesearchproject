@@ -26,7 +26,7 @@ func NewAdminServer(setting settings.Settings, database database.Database) (*ser
 	}
 
 	// Initialize Services
-	fileService, err := FileService.NewFileService(fileRepo, setting)
+	fileService, err := FileService.NewFileService(fileRepo, setting, database)
 	if err != nil {
 		return nil, errors.Wrap(err, "Could not initialize file service")
 	}
