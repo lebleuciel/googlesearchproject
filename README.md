@@ -1,7 +1,10 @@
 
-# Maani google search project
+# Maani google search project extension
+
+This extension builds upon the earlier Maani project available on my GitHub page, introducing additional features, such as an API for Google search and the retrieval of images based on user-provided queries, along with the ability to save the results.
+
 ## Introduction
-This guide provides detailed instructions to run the google search project locally. The project is structured with three main components: Database, Store, and Retrieval. The Store component comprises servers for the backend and admin, while the Retrieval component acts as an API gateway.this project is mainly providing uploading and downloading features for various file types in addition to an API for searching with google and retrieving images based on the provided query and saving the results . 
+This guide offers comprehensive instructions for running the Maani Google Search Project locally. The project is organized into three key components: Database, Store, and Retrieval. The Store component encompasses backend and admin servers, while the Retrieval component functions as an API gateway. The project primarily focuses on facilitating the uploading and downloading of various file types, alongside providing an API for Google search and image retrieval based on user queries, with the option to save the results.
 
 ## project structure
 This Go project follows a microservices architecture, featuring two main components:
