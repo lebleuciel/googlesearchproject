@@ -1,7 +1,7 @@
 
-# Maani project
+# Maani google search project
 ## Introduction
-This guide provides detailed instructions to run the Maani project locally. The project is structured with three main components: Database, Store, and Retrieval. The Store component comprises servers for the backend and admin, while the Retrieval component acts as an API gateway.
+This guide provides detailed instructions to run the google search project locally. The project is structured with three main components: Database, Store, and Retrieval. The Store component comprises servers for the backend and admin, while the Retrieval component acts as an API gateway.this project is mainly providing uploading and downloading features for various file types in addition to an API for searching with google and retrieving images based on the provided query and saving the results . 
 
 ## project structure
 This Go project follows a microservices architecture, featuring two main components:

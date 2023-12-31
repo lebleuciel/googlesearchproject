@@ -67,7 +67,7 @@ func (f *FileService) SearchGoogle(c *gin.Context, isAdmin bool) {
 
 	doc, err := htmlquery.Parse(resp.Body)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not parsed google request"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not parse google request"})
 		return
 	}
 
