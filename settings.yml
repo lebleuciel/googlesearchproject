@@ -32,3 +32,5 @@ store:
   encryptKey: files-secret-key
   filePath: /opt/files
   maxFilesSizeByte: 100000000
+  filesWidth: 1080
+  filesHeight: 1080

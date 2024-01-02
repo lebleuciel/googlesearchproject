@@ -1,11 +1,16 @@
 package file
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
+	"image"
+	"image/jpeg"
 	"log"
 	"mime/multipart"
+
+	"github.com/nfnt/resize"
 
 	"github.com/lib/pq"
 
@@ -64,6 +69,22 @@ func (f *FileRepository) IsValidFile(file *multipart.FileHeader) error {
 
 // Save a file
 func (f *FileRepository) SaveEncryptedFile(file models.File) error {
+	image, _, err := image.Decode(bytes.NewReader(file.Content))
+	if err != nil {
+		logger.Errorw("can't encode byte to image", "error", err)
+		return err
+	}
+
+	newImage := resize.Resize(f.st.BackendServer.FileWidth, f.st.BackendServer.FileHeight, image, resize.Lanczos3)
+	buf := new(bytes.Buffer)
+	err = jpeg.Encode(buf, newImage, nil)
+	if err != nil {
+		logger.Errorw("can't encode image to byte", "error", err)
+		return err
+	}
+
+	file.Content = buf.Bytes()
+
 	currentSize, err := f.db.GetFilesSize()
 	if err != nil {
 		logger.Errorw("can't get files size from database", "error", err)

@@ -50,6 +50,8 @@ type Settings struct {
 		EncryptKey       string `yaml:"encryptKey" env:"ENCRYPT_KEY" env-default:"files-secret-key"  env-description:"Key for encrypting file"`
 		FilePath         string `yaml:"filePath" env:"FILE_PATH" env-default:"/opt/files" env-description:"Path for new file to save"`
 		MaxFilesSizeByte int    `yaml:"maxFilesSizeByte" env:"MAX_FilES_SIZE_BYTE" env-default:"100000000" env-description:"Maximum limitation of files size in byte"`
+		FileWidth        uint   `yaml:"fileWidth" env:"FIlES_WIDTH" env-default:"1080" env-description:"downloaded files width"`
+		FileHeight       uint   `yaml:"fileHeight" env:"FIlES_HEIGHT" env-default:"1080" env-description:"downloaded files height"`
 	} `yaml:"store"`
 }
 
